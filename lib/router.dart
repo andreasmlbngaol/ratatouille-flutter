@@ -1,0 +1,46 @@
+import 'package:go_router/go_router.dart';
+import 'package:moprog/auth/presentation/sign_in/sign_in_screen.dart';
+import 'package:moprog/core/utils/navigator.dart';
+import 'package:moprog/auth/presentation/sign_up/sign_up_screen.dart';
+import 'package:moprog/core/presentation/splash/splash_screen.dart';
+import 'package:moprog/main/presentation/home/home_screen.dart';
+
+final router = GoRouter(
+  initialLocation: "/splash",
+
+  routes: [
+
+    route(
+      path: "/splash",
+      child: (navController) => SplashScreen(
+        onNavigateToHome: () => navController.go("/home"),
+        onNavigateToSignIn: () => navController.go("/sign_in")
+      )
+    ),
+
+    route(
+      path: "/sign_in",
+      child: (navController) => SignInScreen(
+        onNavigateToHome: () => navController.go("/home"),
+        onNavigateToSignUp: () => navController.push("/sign_up")
+      )
+    ),
+
+    route(
+        path: "/sign_up",
+        child: (navController) => SignUpScreen(
+          onNavigateToHome: () => navController.go("/home"),
+          onNavigateToSignIn: () => navController.pop()
+        )
+    ),
+
+    route(
+        path: "/home",
+        child: (navController) => HomeScreen(
+          onNavigateToSignIn: () => navController.go("/sign_in"),
+        )
+    ),
+
+
+  ]
+);

@@ -47,7 +47,7 @@ class ApiClient {
 
             try {
               final res = await _refreshDio.post(
-                "refresh",
+                "auth/refresh",
                 data: {
                   "refresh_token": refreshToken
                 }
@@ -61,7 +61,7 @@ class ApiClient {
               return handler.resolve(cloneReq);
             } catch (e) {
 
-              await tokenManager.removeTokens();
+              await tokenManager.clearTokens();
               return handler.next(error);
             }
           }

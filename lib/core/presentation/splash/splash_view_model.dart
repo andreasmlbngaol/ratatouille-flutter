@@ -1,24 +1,23 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:moprog/core/model/api_client.dart';
+import 'package:moprog/core/model/token_manager.dart';
+import 'package:moprog/core/utils/view_model.dart';
 
-class SplashViewModel extends ChangeNotifier {
-  final ApiClient httpClient;
+class SplashViewModel extends ViewModel {
+  final ApiClient apiClient;
+  final TokenManager tokenManager;
 
-  SplashViewModel({required this.httpClient});
+  SplashViewModel({required this.apiClient, required this.tokenManager});
 
   void checkAuthUser({
     required Function() onAuthenticated,
     required Function() onUnauthenticated
   }) async {
-    try {
-      final res = await httpClient.dio.get("");
-      debugPrint("SplashViewModel: ${res.data["message"]}");
-      debugPrint("SplashViewModel: ${res.data["error"]}");
-      debugPrint("SplashViewModel: ${res.data.toString()}");
+    if (tokenManager.refreshToken != null) {
+      print("User is authenticated");
       onAuthenticated();
-    } catch (e) {
-      debugPrint("SplashViewModel: ${e.toString()}");
+    } else {
+      print("User is not authenticated");
       onUnauthenticated();
     }
   }

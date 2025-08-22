@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:moprog/core/presentation/splash/splash_view_model.dart';
 import 'package:moprog/core/presentation/widget.dart';
 import 'package:moprog/core/utils/launched_effect.dart';
-import 'package:moprog/core/utils/navigator.dart';
-import 'package:moprog/di/dependency_injection.dart';
-import 'package:moprog/main.dart';
+import 'package:moprog/core/di/dependency_injection.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+  final VoidCallback onNavigateToHome;
+  final VoidCallback onNavigateToSignIn;
+
+  const SplashScreen({
+    super.key,
+    required this.onNavigateToHome,
+    required this.onNavigateToSignIn,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +21,8 @@ class SplashScreen extends StatelessWidget {
         content: (context, viewModel) {
           launchedEffect(() {
             viewModel.checkAuthUser(
-                onAuthenticated: () {
-                  resetBackStack(context, const AuthenticatedScreen());
-                },
-                onUnauthenticated: () {
-                  resetBackStack(context, const UnauthenticatedScreen());
-                }
+                onAuthenticated: onNavigateToHome,
+                onUnauthenticated: onNavigateToSignIn
             );
           });
 

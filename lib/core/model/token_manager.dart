@@ -20,7 +20,7 @@ class TokenManager {
     await _box.put("access_token", accessToken);
   }
 
-  Future<void> removeTokens() async {
+  Future<void> clearTokens() async {
     await _box.clear();
   }
 
