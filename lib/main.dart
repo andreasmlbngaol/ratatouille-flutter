@@ -9,13 +9,14 @@ import 'firebase_options.dart';
 
 
 void main() async {
+  /// Inisialisasi Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter(); // wajib sebelum buka box apapun
+  /// Inisialisasi Hive untuk penyimpanan local jwt token nya
+  await Hive.initFlutter();
   await setupDi();
 
   runApp(const MyApp());
@@ -24,6 +25,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  /// Pakai Material 3 Theme. see https://m3.material.io/
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

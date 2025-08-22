@@ -5,6 +5,7 @@ import 'package:moprog/auth/presentation/sign_up/sign_up_screen.dart';
 import 'package:moprog/core/presentation/splash/splash_screen.dart';
 import 'package:moprog/main/presentation/home/home_screen.dart';
 
+/// Navigasi dari mana ke mana langsung diatur dari sini, biar terpusat dan gampang debug nya
 final router = GoRouter(
   initialLocation: "/splash",
 

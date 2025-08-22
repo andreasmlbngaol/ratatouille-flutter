@@ -4,6 +4,7 @@ import 'package:moprog/core/presentation/widget.dart';
 import 'package:moprog/core/utils/launched_effect.dart';
 import 'package:moprog/core/di/dependency_injection.dart';
 
+
 class SplashScreen extends StatelessWidget {
   final VoidCallback onNavigateToHome;
   final VoidCallback onNavigateToSignIn;
@@ -17,8 +18,11 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelStatelessWidget(
+      /// Ini contoh pemakaian dependency injection jadi gak perlu masukkan argumen SplashViewModel-nya
         viewModel: () => getIt<SplashViewModel>(),
         content: (context, viewModel) {
+
+          /// Ini dijalankan pas UI nya siap di render. Jadi render selesai, baru cek apakah user sudah login atau belum
           launchedEffect(() {
             viewModel.checkAuthUser(
                 onAuthenticated: onNavigateToHome,
@@ -26,6 +30,7 @@ class SplashScreen extends StatelessWidget {
             );
           });
 
+          /// Ini UI nya :v
           return Scaffold(
             body: Center(
               child: Container(

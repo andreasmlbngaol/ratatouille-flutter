@@ -26,7 +26,7 @@ class ApiClient {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          debugPrint("ApiClient: onRequest...");
+          debugPrint("ApiClient: onRequest, headers: ${options.headers}");
           final accessToken = tokenManager.accessToken; // langsung ambil dari singleton
           if(accessToken != null) {
             options.headers["Authorization"] = "Bearer $accessToken";
@@ -54,7 +54,8 @@ class ApiClient {
               );
 
               final newAccessToken = res.data["access_token"];
-              await tokenManager.saveAccessToken(newAccessToken);
+              final newRefreshToken = res.data["refresh_token"];
+              await tokenManager.saveTokens(newAccessToken, newRefreshToken);
 
               opts.headers["Authorization"] = "Bearer $newAccessToken";
               final cloneReq = await dio.fetch(opts);
