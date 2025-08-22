@@ -1,16 +1,58 @@
-# moprog
+# MOPROG - Aplikasi Mobile Multiplatform dengan Flutter
 
-A new Flutter project.
+## Tentang Proyek
 
-## Getting Started
+Proyek MOPROG adalah tugas semester untuk mata kuliah Mobile Programming. Repository ini khusus untuk versi multiplatform yang dikembangkan menggunakan Flutter.
 
-This project is a starting point for a Flutter application.
+## Struktur Branch
 
-A few resources to get you started if this is your first Flutter project:
+Proyek ini menggunakan struktur branch berikut untuk pengembangan:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- `main`: Branch produksi yang stabil
+- `development`: Branch untuk integrasi fitur sebelum dirilis ke `main`
+- `features/xxx`: Branch untuk pengembangan fitur individual
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Alur Kerja
+
+Setiap developer bekerja pada branch `features/xxx` masing-masing, di mana `xxx` adalah nama fitur yang sedang dikembangkan. Alur kerja pengembangan:
+
+1. Buat branch baru dari `development` dengan format `features/nama-fitur`
+2. Kembangkan fitur di branch tersebut
+3. Setelah selesai, buat Pull Request ke branch `development`
+4. Setelah semua fitur terintegrasi di `development` dan teruji dengan baik, akan dilakukan Pull Request ke branch `main`
+
+## Cara Menjalankan Proyek
+
+### Prasyarat
+
+- Flutter SDK (versi terbaru)
+- Android Studio / VS Code
+- Emulator atau perangkat fisik untuk pengujian
+
+### Langkah-langkah
+
+1. Clone repository
+   ```
+   git clone https://github.com/andreasmlbngaol/moprog.git
+   ```
+
+2. Masuk ke direktori proyek
+   ```
+   cd moprog
+   ```
+
+3. Install dependencies
+   ```
+   flutter pub get
+   ```
+
+4. Jalankan aplikasi
+   ```
+   flutter run
+   ```
+
+## Kontributor
+
+- [Andreas M Lbn Gaol](https://github.com/andreasmlbngaol)
+- [Bintang Aulia](https://github.com/BintangAull)
+- [Clara Angelin Pijoh](https://github.com/indomiekwah)
