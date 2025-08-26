@@ -30,9 +30,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: router,
-        title: 'MVVM Demo',
-        theme: lightMaterialTheme,
-        darkTheme: darkMaterialTheme,
+      title: 'MVVM Demo',
+      theme: lightMaterialTheme,
+      darkTheme: darkMaterialTheme,
     );
   }
 }

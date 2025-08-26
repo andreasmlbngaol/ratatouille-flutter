@@ -23,5 +23,5 @@ Future<void> setupDi() async {
   getIt.registerFactory<SplashViewModel>(() => SplashViewModel(apiClient: getIt(), tokenManager: getIt()));
   getIt.registerFactory<SignInViewModel>(() => SignInViewModel(apiClient: getIt(), authService: getIt(), tokenManager: getIt()));
   getIt.registerFactory<SignUpViewModel>(() => SignUpViewModel(apiClient: getIt(), authService: getIt()));
-  getIt.registerFactory<HomeViewModel>(() => HomeViewModel(authService: getIt()));
+  getIt.registerFactory<HomeViewModel>(() => HomeViewModel(authService: getIt(), apiClient: getIt()));
 }

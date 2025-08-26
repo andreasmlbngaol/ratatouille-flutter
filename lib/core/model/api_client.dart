@@ -47,6 +47,7 @@ class ApiClient {
             }
 
             try {
+              debugPrint("ApiClient: Refreshing token");
               final res = await _refreshDio.post(
                 "/auth/refresh",
                 data: {

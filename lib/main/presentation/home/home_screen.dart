@@ -28,6 +28,10 @@ class HomeScreen extends StatelessWidget {
                   FilledButton(
                       onPressed: () { viewModel.signOut(onNavigateToSignIn); },
                       child: const Text("Sign Out")
+                  ),
+                  FilledButton(
+                    onPressed: () { viewModel.testPing(); },
+                    child: const Text("Ping"),
                   )
                 ],
               ),
