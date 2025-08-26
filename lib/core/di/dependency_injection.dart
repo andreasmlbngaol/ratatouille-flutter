@@ -20,7 +20,7 @@ Future<void> setupDi() async {
   getIt.registerLazySingleton<AuthService>(() => AuthService(tokenManager: getIt()));
 
   /// ViewModelFactory yang langsung di inject dependency-nya
-  getIt.registerFactory<SplashViewModel>(() => SplashViewModel(apiClient: getIt(), tokenManager: getIt()));
+  getIt.registerFactory<SplashViewModel>(() => SplashViewModel(apiClient: getIt(), tokenManager: getIt(), authService: getIt()));
   getIt.registerFactory<SignInViewModel>(() => SignInViewModel(apiClient: getIt(), authService: getIt(), tokenManager: getIt()));
   getIt.registerFactory<SignUpViewModel>(() => SignUpViewModel(apiClient: getIt(), authService: getIt()));
   getIt.registerFactory<HomeViewModel>(() => HomeViewModel(authService: getIt(), apiClient: getIt()));
