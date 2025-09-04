@@ -74,7 +74,7 @@ class SignInScreen extends StatelessWidget {
                             child: const Text("Sign In with Google")
                         ),
                         FilledButton(
-                            onPressed: state.email.isNotEmpty && state.password.isNotEmpty ? viewModel.signIn : null,
+                            onPressed: state.email.isNotEmpty && state.password.isNotEmpty ? viewModel.signInWithEmailAndPassword : null,
                             child: const Text("Sign In")
                         ),
                         TextButton(

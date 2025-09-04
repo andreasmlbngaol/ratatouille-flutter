@@ -42,6 +42,18 @@ class SignUpScreen extends StatelessWidget {
                         ),
                         TextField(
                           decoration: InputDecoration(
+                            labelText: "Name",
+                            prefixIcon: Icon(Icons.abc),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16)
+                            )
+                          ),
+                          onChanged: (value) {
+                            viewModel.setName(value);
+                          },
+                        ),
+                        TextField(
+                          decoration: InputDecoration(
                             labelText: "Email",
                             prefixIcon: Icon(Icons.email),
                             border: OutlineInputBorder(
@@ -87,8 +99,12 @@ class SignUpScreen extends StatelessWidget {
                           },
                         ),
                         FilledButton(
-                            onPressed: viewModel.signUp,
+                            onPressed: () => viewModel.signUpWithEmailAndPassword(onSuccess: onNavigateToHome),
                             child: const Text("Sign Up")
+                        ),
+                        ElevatedButton(
+                            onPressed: () => viewModel.signInWithGoogle(onSuccess: onNavigateToHome),
+                            child: const Text("Sign In with Google")
                         ),
                         TextButton(
                             onPressed: onNavigateToSignIn,

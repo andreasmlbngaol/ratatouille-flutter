@@ -36,26 +36,6 @@ class AuthService {
     }
   }
 
-  // Future<UserCredential?> signInWithGoogle() async {
-  //   try {
-  //     final googleProvider = GoogleAuthProvider();
-  //
-  //     // Opsional: tambahkan scope jika perlu akses Google APIs tertentu
-  //     // googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-  //
-  //     // Opsional: set custom parameters
-  //     // googleProvider.setCustomParameters({'prompt': 'select_account'});
-  //
-  //     final userCredential =
-  //     await FirebaseAuth.instance.signInWithProvider(googleProvider);
-  //
-  //     return userCredential;
-  //   } catch (e) {
-  //     debugPrint('Google sign-in error: $e');
-  //     return null;
-  //   }
-  // }
-
   Future<UserCredential> signInWithEmailAndPassword({
     required String email,
     required String password,

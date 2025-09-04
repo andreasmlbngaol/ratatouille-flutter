@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:moprog/auth/model/auth_service.dart';
 import 'package:moprog/auth/presentation/sign_in/sign_in_state.dart';
 import 'package:moprog/core/model/api_client.dart';
@@ -34,7 +35,7 @@ class SignInViewModel extends ViewModel {
     notifyListeners();
   }
 
-  void signIn() async {
+  void signInWithEmailAndPassword() async {
     print("Sign In. Email: ${_state.email}, Password: ${_state.password}");
   }
 
@@ -57,6 +58,10 @@ class SignInViewModel extends ViewModel {
     required String method
   }) async {
     print("Sign In to Back End");
+    debugPrint("ID Token: $idToken");
+    debugPrint("Method: $method");
+
+
     final res = await apiClient.dio.post(
       "/auth/login",
       data: {
