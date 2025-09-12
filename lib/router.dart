@@ -23,7 +23,7 @@ final router = GoRouter(
       path: "/sign_in",
       child: (navController) => SignInScreen(
         onNavigateToHome: () => navController.go("/home"),
-        onNavigateToSignUp: () => navController.push("/sign_up")
+        onNavigateToSignUp: () => navController.go("/sign_up")
       )
     ),
 
@@ -31,7 +31,7 @@ final router = GoRouter(
         path: "/sign_up",
         child: (navController) => SignUpScreen(
           onNavigateToHome: () => navController.go("/home"),
-          onNavigateToSignIn: () => navController.pop()
+          onNavigateToSignIn: () => navController.go("/sign_in")
         )
     ),
 

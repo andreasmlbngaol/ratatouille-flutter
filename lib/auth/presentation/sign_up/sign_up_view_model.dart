@@ -1,20 +1,14 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:moprog/auth/model/auth_service.dart';
+import 'package:moprog/auth/data/auth/auth_method.dart';
+import 'package:moprog/auth/data/auth/login_request/login_request.dart';
+import 'package:moprog/auth/presentation/auth_view_model.dart';
 import 'package:moprog/auth/presentation/sign_up/sign_up_state.dart';
-import 'package:moprog/core/model/api_client.dart';
-import 'package:moprog/core/model/token_manager.dart';
-import 'package:moprog/core/utils/view_model.dart';
 
-class SignUpViewModel extends ViewModel {
-  final ApiClient apiClient;
-  final AuthService authService;
-  final TokenManager tokenManager;
-
+class SignUpViewModel extends AuthViewModel {
   SignUpViewModel({
-    required this.apiClient,
-    required this.authService,
-    required this.tokenManager
+    required super.repository,
+    required super.authService,
+    required super.tokenManager
   });
 
   SignUpState _state = const SignUpState();
@@ -52,23 +46,16 @@ class SignUpViewModel extends ViewModel {
   }
 
   void signUpWithEmailAndPassword({
-    required Function() onSuccess
+    required Function() onSuccess,
+    required Function(String) onFailed
   }) async {
     debugPrint("Sign Up. Email: ${_state.email}, Password: ${_state.password}, Confirm Password: ${_state.confirmPassword}");
     try {
-      final checkEmailRes = await apiClient.dio.post(
-          "/auth/register/check-email",
-          data: {
-            "email": _state.email
-          }
-      );
-
-      if (checkEmailRes.statusCode == null || checkEmailRes.statusCode != 200) {
+      if(await repository.checkEmailAvailability(_state.email) == null) {
         debugPrint("Email already registered");
+        onFailed("Email sudah terdaftar");
         return;
       }
-
-      debugPrint("Masih lanjut sampek sini");
 
       final credential = await authService.signUpWithEmailAndPassword(
           email: _state.email,
@@ -76,65 +63,19 @@ class SignUpViewModel extends ViewModel {
       );
       final idToken = await credential.user?.getIdToken();
       if (idToken != null) {
-        final res = await signInToBackEnd(
-            idToken: idToken,
-            method: "EMAIL_AND_PASSWORD"
-        );
-        if (res.statusCode != null && res.statusCode! >= 200 &&
-            res.statusCode! < 300) {
-          await apiClient.dio.patch(
-            "/users/name",
-            data: {
-              "name": _state.name
-            }
-          );
-          onSuccess();
+        final res = await repository.login(LoginRequest(idToken: idToken, method: AuthMethod.GOOGLE));
+        if(res == null) {
+          debugPrint("Error logging in");
+          onFailed("Gagal login");
+          return;
         }
+
+        await tokenManager.saveTokens(res.tokens.accessToken, res.tokens.refreshToken);
+        await repository.changeName(_state.name);
+        onSuccess();
       }
     } catch (e) {
       debugPrint("Error: ${e.toString()}");
     }
-  }
-
-  void signInWithGoogle({
-    required Function() onSuccess
-  }) async {
-    debugPrint("Sign In with Google");
-    final credential = await authService.signInWithGoogle();
-    final idToken = await credential?.user?.getIdToken();
-    if (idToken != null) {
-      final res = await signInToBackEnd(idToken: idToken, method: "GOOGLE");
-      if(res.statusCode != null && res.statusCode! >= 200 && res.statusCode! < 300) {
-        onSuccess();
-      }
-    }
-  }
-
-  Future<Response> signInToBackEnd({
-    required String idToken,
-    required String method
-  }) async {
-    debugPrint("Sign In to Back End");
-    debugPrint("ID Token: $idToken");
-    debugPrint("Method: $method");
-
-    final res = await apiClient.dio.post(
-        "/auth/login",
-        data: {
-          "id_token": idToken,
-          "method": method
-        }
-    );
-
-    // debugPrint(res.data);
-
-    final tokens = res.data["tokens"];
-
-    final accessToken = tokens["access_token"];
-    final refreshToken = tokens["refresh_token"];
-
-    await tokenManager.saveTokens(accessToken, refreshToken);
-
-    return res;
   }
 }

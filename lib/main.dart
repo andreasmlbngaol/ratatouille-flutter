@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:moprog/core/presentation/theme.dart';
 import 'package:moprog/core/di/dependency_injection.dart';
@@ -29,10 +30,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      builder: FToastBuilder(),
       routerConfig: router,
       title: 'MVVM Demo',
       theme: lightMaterialTheme,
-      darkTheme: darkMaterialTheme,
+      // darkTheme: darkMaterialTheme,
     );
   }
 }

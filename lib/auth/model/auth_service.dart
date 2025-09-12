@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:moprog/core/model/token_manager.dart';
 
@@ -28,10 +29,10 @@ class AuthService {
         idToken: googleSignInAuthentication.idToken
       );
 
-      print("Sign In with Google");
+      debugPrint("Sign In with Google");
       return await firebaseAuth.signInWithCredential(authCredential);
     } catch (e) {
-      print(e);
+      debugPrint(e as String?);
       return null;
     }
   }
@@ -68,6 +69,15 @@ class AuthService {
 
   Future<void> updateName(String newUsername) async {
     await currentUser!.updateDisplayName(newUsername);
+  }
+
+  Future<void> updatePassword({
+    required String oldPassword,
+    required String newPassword
+  }) async {
+    final credential = EmailAuthProvider.credential(email: currentUser!.email!, password: oldPassword);
+    await currentUser!.reauthenticateWithCredential(credential);
+    await currentUser!.updatePassword(newPassword);
   }
 
   Future<void> deleteAccount({

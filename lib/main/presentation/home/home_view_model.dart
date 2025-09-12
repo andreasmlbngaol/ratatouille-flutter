@@ -23,7 +23,7 @@ class HomeViewModel extends ViewModel {
   void signOut(
       Function() onSuccess
   ) async {
-    print("Sign Out");
+    debugPrint("Sign Out");
     await authService.signOut();
     onSuccess();
   }

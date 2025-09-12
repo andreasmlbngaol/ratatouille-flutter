@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moprog/auth/presentation/sign_up/sign_up_view_model.dart';
 import 'package:moprog/core/presentation/widget.dart';
 import 'package:moprog/core/di/dependency_injection.dart';
@@ -99,11 +100,29 @@ class SignUpScreen extends StatelessWidget {
                           },
                         ),
                         FilledButton(
-                            onPressed: () => viewModel.signUpWithEmailAndPassword(onSuccess: onNavigateToHome),
+                            onPressed: () => viewModel.signUpWithEmailAndPassword(
+                              onSuccess: onNavigateToHome,
+                              onFailed: (error) {
+                                Fluttertoast.showToast(
+                                  msg: error,
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                );
+                              }
+                            ),
                             child: const Text("Sign Up")
                         ),
                         ElevatedButton(
-                            onPressed: () => viewModel.signInWithGoogle(onSuccess: onNavigateToHome),
+                            onPressed: () => viewModel.signInWithGoogle(
+                              onSuccess: onNavigateToHome,
+                              onFailed: (error) {
+                                Fluttertoast.showToast(
+                                  msg: error,
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                );
+                              }
+                            ),
                             child: const Text("Sign In with Google")
                         ),
                         TextButton(
