@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:moprog/di/dependency_injection.dart';
+import 'package:moprog/core/presentation/theme.dart';
+import 'package:moprog/core/di/dependency_injection.dart';
+import 'package:moprog/router.dart';
 
-import 'core/presentation/splash/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 
 void main() async {
+  /// Inisialisasi Firebase
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter(); // wajib sebelum buka box apapun
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  /// Inisialisasi Hive untuk penyimpanan local jwt token nya
+  await Hive.initFlutter();
   await setupDi();
 
   runApp(const MyApp());
@@ -15,57 +26,15 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  /// Pakai Material 3 Theme. see https://m3.material.io/
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent, brightness: Brightness.dark),
-          useMaterial3: true
-      ),
+    return MaterialApp.router(
+      builder: FToastBuilder(),
+      routerConfig: router,
       title: 'MVVM Demo',
-      theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-          useMaterial3: true
-      ),
-      initialRoute: "/splash",
-      routes: {
-        "/splash": (_) => const SplashScreen(),
-        "/authenticated": (_) => const AuthenticatedScreen(),
-        "/unauthenticated": (_) => const UnauthenticatedScreen(),
-      },
-    );
-  }
-}
-
-class AuthenticatedScreen extends StatelessWidget {
-  const AuthenticatedScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Authenticated Screen"),
-      ),
-      body: const Center(
-        child: Text("Hello"),
-      ),
-    );
-  }
-}
-
-class UnauthenticatedScreen extends StatelessWidget {
-  const UnauthenticatedScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Unauthenticated Screen"),
-      ),
-      body: const Center(
-        child: Text("Hello"),
-      ),
+      theme: lightMaterialTheme,
+      // darkTheme: darkMaterialTheme,
     );
   }
 }
