@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:moprog/auth/data/auth/refresh_token_response/refresh_token_response.dart';
 import 'package:moprog/core/model/token_manager.dart';
 
 class ApiClient {
@@ -58,7 +59,12 @@ class ApiClient {
               if(res.statusCode == 200) {
                 final newAccessToken = res.data["access_token"];
                 final newRefreshToken = res.data["refresh_token"];
-                await tokenManager.saveTokens(newAccessToken, newRefreshToken);
+                await tokenManager.saveTokens(
+                    RefreshTokenResponse(
+                        accessToken: newAccessToken,
+                        refreshToken: newRefreshToken
+                    )
+                );
 
                 opts.headers["Authorization"] = "Bearer $newAccessToken";
                 final cloneReq = await dio.fetch(opts);

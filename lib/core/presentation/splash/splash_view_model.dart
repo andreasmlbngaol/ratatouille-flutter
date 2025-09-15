@@ -1,6 +1,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:moprog/auth/model/auth_service.dart';
 import 'package:moprog/core/model/api_client.dart';
 import 'package:moprog/core/model/token_manager.dart';
@@ -16,10 +17,22 @@ class SplashViewModel extends ViewModel {
 
   void checkAuthUser({
     required Function() onAuthenticated, /// Callback function sebutannya
-    required Function() onUnauthenticated
+    required Function() onNavigateToVerification,
+    required Function() onUnauthenticated,
+    required Function() onNoInternetConnection,
+    required Function() onServerError
   }) async {
     await tokenManager.init(); /// Ini yang harusnya ada di dependency_injection, biar gak kelamaan startup disini aja
 
+    // Step 1: Cek koneksi internet
+    final hasInternet = await InternetConnectionChecker.instance.hasConnection;
+    if(!hasInternet) {
+      debugPrint("checkAuthUser: No Internet Connection");
+      onNoInternetConnection();
+      return;
+    }
+
+    // Step 2: Cek apakah user sudah login atau belum
     if (tokenManager.refreshToken != null && tokenManager.accessToken != null) {
       debugPrint("checkAuthUser: Refresh Token and Access Token found");
       try {
@@ -28,9 +41,19 @@ class SplashViewModel extends ViewModel {
         if (res.statusCode == 200) {
           debugPrint("checkAuthUser: /ping-protected success");
           onAuthenticated();
+          if(tokenManager.user?.isEmailVerified == true) {
+            onAuthenticated();
+          } else {
+            onNavigateToVerification();
+          }
           return;
         }
-      } on DioException catch (_) {
+      } on DioException catch (e) {
+        if(e.response?.statusCode != null && e.response!.statusCode! > 500) {
+          debugPrint("checkAuthUser: Server Error");
+          onServerError();
+          return;
+        }
         debugPrint("Access Token and Refresh Token invalid");
         await authService.signOut();
         onUnauthenticated();
@@ -38,6 +61,7 @@ class SplashViewModel extends ViewModel {
       }
     }
 
+    // Step 3: Jika tidak ada refresh token atau access token, langsung sign out
     debugPrint("checkAuthUser: Refresh Token and Access Token not found");
     await authService.signOut();
     onUnauthenticated();

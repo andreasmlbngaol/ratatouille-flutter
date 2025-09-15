@@ -15,6 +15,7 @@ final router = GoRouter(
       path: "/splash",
       child: (navController) => SplashScreen(
         onNavigateToHome: () => navController.go("/home"),
+        onNavigateToVerification: () => navController.go("/sign_up"), // Ini nanti diganti sama route untuk email verification
         onNavigateToSignIn: () => navController.go("/sign_in")
       )
     ),
@@ -23,6 +24,7 @@ final router = GoRouter(
       path: "/sign_in",
       child: (navController) => SignInScreen(
         onNavigateToHome: () => navController.go("/home"),
+        onNavigateToVerification: () => navController.go("/sign_up"), // Ini nanti diganti sama route untuk email verification
         onNavigateToSignUp: () => navController.go("/sign_up")
       )
     ),
@@ -31,6 +33,7 @@ final router = GoRouter(
         path: "/sign_up",
         child: (navController) => SignUpScreen(
           onNavigateToHome: () => navController.go("/home"),
+          onNavigateToVerification: () => navController.go("/sign_up"), // Ini nanti diganti sama route untuk email verification
           onNavigateToSignIn: () => navController.go("/sign_in")
         )
     ),

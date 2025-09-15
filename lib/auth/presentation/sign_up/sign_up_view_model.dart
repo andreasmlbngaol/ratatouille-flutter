@@ -15,22 +15,74 @@ class SignUpViewModel extends AuthViewModel {
 
   SignUpState get state => _state;
 
+  void _validateName(String name) {
+    if (name.isEmpty) {
+      _state = _state.copyWith(nameError: "Nama tidak boleh kosong");
+    } else {
+      _state = _state.copyWith(nameError: null);
+    }
+  }
   void setName(String value) {
     _state = _state.copyWith(name: value);
+    _validateName(value);
     notifyListeners();
   }
 
+  void _validateEmail(String email) {
+    if (email.isEmpty) {
+      _state = _state.copyWith(emailError: "Email tidak boleh kosong");
+    } else {
+      final regex = RegExp(
+          r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+      );
+      if (!regex.hasMatch(email)) {
+        _state = _state.copyWith(emailError: "Email tidak valid");
+      } else {
+        _state = _state.copyWith(emailError: null);
+      }
+    }
+  }
   void setEmail(String value) {
     _state = _state.copyWith(email: value);
+    _validateEmail(value);
     notifyListeners();
+  }
+
+  void _validatePassword(String password) {
+    if (password.isEmpty) {
+      _state = _state.copyWith(passwordError: "Password tidak boleh kosong");
+    } else if (password.length < 8) {
+      _state = _state.copyWith(passwordError: "Password minimal 8 karakter");
+    } else if (!RegExp(r'[A-Z]').hasMatch(password)) {
+      _state = _state.copyWith(passwordError: "Password harus mengandung huruf besar");
+    } else if (!RegExp(r'[a-z]').hasMatch(password)) {
+      _state = _state.copyWith(passwordError: "Password harus mengandung huruf kecil");
+    } else if (!RegExp(r'\d').hasMatch(password)) {
+      _state = _state.copyWith(passwordError: "Password harus mengandung angka");
+    } else {
+      _state = _state.copyWith(passwordError: null);
+    }
   }
   void setPassword(String value) {
     _state = _state.copyWith(password: value);
+    _validatePassword(value);
     notifyListeners();
   }
 
+  void _validateConfirmPassword(String confirmPassword) {
+    if (confirmPassword.isEmpty) {
+      _state = _state.copyWith(
+          confirmPasswordError: "Konfirmasi password tidak boleh kosong");
+    } else if (confirmPassword != _state.password) {
+      _state = _state.copyWith(
+          confirmPasswordError: "Konfirmasi password tidak sama dengan password");
+    } else {
+      _state = _state.copyWith(confirmPasswordError: null);
+    }
+  }
   void setConfirmPassword(String value) {
     _state = _state.copyWith(confirmPassword: value);
+    _validateConfirmPassword(value);
     notifyListeners();
   }
 
@@ -46,7 +98,8 @@ class SignUpViewModel extends AuthViewModel {
   }
 
   void signUpWithEmailAndPassword({
-    required Function() onSuccess,
+    required Function() onNavigateToHome,
+    required Function() onNavigateToVerification,
     required Function(String) onFailed
   }) async {
     debugPrint("Sign Up. Email: ${_state.email}, Password: ${_state.password}, Confirm Password: ${_state.confirmPassword}");
@@ -63,16 +116,31 @@ class SignUpViewModel extends AuthViewModel {
       );
       final idToken = await credential.user?.getIdToken();
       if (idToken != null) {
-        final res = await repository.login(LoginRequest(idToken: idToken, method: AuthMethod.GOOGLE));
-        if(res == null) {
+        final tempRes = await repository.login(LoginRequest(idToken: idToken, method: AuthMethod.EMAIL_AND_PASSWORD));
+        if(tempRes == null) {
           debugPrint("Error logging in");
           onFailed("Gagal login");
           return;
         }
 
-        await tokenManager.saveTokens(res.tokens.accessToken, res.tokens.refreshToken);
+        await tokenManager.saveData(tempRes);
+
         await repository.changeName(_state.name);
-        onSuccess();
+        final finalRes = await repository.login(LoginRequest(idToken: idToken, method: AuthMethod.EMAIL_AND_PASSWORD));
+        await tokenManager.clearTokens();
+        if(finalRes == null) {
+          debugPrint("Error logging in");
+          onFailed("Gagal login");
+          return;
+        }
+
+        await tokenManager.saveData(finalRes);
+        debugPrint(tokenManager.user.toString());
+        if(tokenManager.user?.isEmailVerified == true) {
+          onNavigateToHome();
+        } else {
+          onNavigateToVerification();
+        }
       }
     } catch (e) {
       debugPrint("Error: ${e.toString()}");

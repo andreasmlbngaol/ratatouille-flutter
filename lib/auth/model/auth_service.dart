@@ -51,10 +51,19 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    return await firebaseAuth.createUserWithEmailAndPassword(
+    final userCredential = await firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password
     );
+
+    debugPrint(userCredential.user.toString());
+    await userCredential.user!.sendEmailVerification().then((_) {
+      debugPrint("Email verification sent");
+    }).catchError((error) {
+      debugPrint("Error sending email verification: $error");
+
+    });
+    return userCredential;
   }
 
   Future<void> signOut() async {

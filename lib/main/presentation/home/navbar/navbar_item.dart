@@ -15,6 +15,7 @@ abstract class NavbarItem with _$NavbarItem {
 
 final navbarItems = [
   NavbarItem(title: "Home", selectedIcon: Icons.home_filled, unselectedIcon: Icons.home_outlined),
-  NavbarItem(title: "Settings", selectedIcon: Icons.settings, unselectedIcon: Icons.settings_outlined),
-  NavbarItem(title: "Profile", selectedIcon: Icons.person, unselectedIcon: Icons.person_outlined),
+  NavbarItem(title: "Favs", selectedIcon: Icons.bookmark, unselectedIcon: Icons.bookmarks_outlined),
+  NavbarItem(title: "My Secret", selectedIcon: Icons.receipt_long, unselectedIcon: Icons.receipt_long_outlined),
+  NavbarItem(title: "Me", selectedIcon: Icons.person, unselectedIcon: Icons.person_outlined),
 ];

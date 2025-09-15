@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:moprog/core/presentation/splash/splash_view_model.dart';
 import 'package:moprog/core/presentation/widget.dart';
 import 'package:moprog/core/utils/launched_effect.dart';
 import 'package:moprog/core/di/dependency_injection.dart';
 
-
 class SplashScreen extends StatelessWidget {
   final VoidCallback onNavigateToHome;
+  final VoidCallback onNavigateToVerification;
   final VoidCallback onNavigateToSignIn;
 
   const SplashScreen({
     super.key,
     required this.onNavigateToHome,
+    required this.onNavigateToVerification,
     required this.onNavigateToSignIn,
   });
 
@@ -25,8 +27,23 @@ class SplashScreen extends StatelessWidget {
           /// Ini dijalankan pas UI nya siap di render. Jadi render selesai, baru cek apakah user sudah login atau belum
           launchedEffect(() {
             viewModel.checkAuthUser(
-                onAuthenticated: onNavigateToHome,
-                onUnauthenticated: onNavigateToSignIn
+              onAuthenticated: onNavigateToHome,
+              onNoInternetConnection: () {
+                Fluttertoast.showToast(
+                    msg: "No Internet Connection",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                );
+              },
+              onNavigateToVerification: onNavigateToVerification,
+              onUnauthenticated: onNavigateToSignIn,
+              onServerError: () {
+                Fluttertoast.showToast(
+                    msg: "Server Error",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                );
+              }
             );
           });
 

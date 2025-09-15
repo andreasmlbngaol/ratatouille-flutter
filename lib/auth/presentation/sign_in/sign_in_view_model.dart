@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:moprog/auth/data/auth/auth_method.dart';
+import 'package:moprog/auth/data/auth/login_request/login_request.dart';
 import 'package:moprog/auth/presentation/auth_view_model.dart';
 import 'package:moprog/auth/presentation/sign_in/sign_in_state.dart';
 
@@ -61,7 +63,35 @@ class SignInViewModel extends AuthViewModel {
     notifyListeners();
   }
 
-  void signInWithEmailAndPassword() async {
+  void signInWithEmailAndPassword({
+    required Function() onNavigateToHome,
+    required Function() onNavigateToVerification,
+    required Function(String) onFailed
+  }) async {
     debugPrint("Sign In. Email: ${_state.email}, Password: ${_state.password}");
+    try {
+      final credential = await authService.signInWithEmailAndPassword(
+          email: _state.email,
+          password: _state.password
+      );
+      final idToken = await credential.user?.getIdToken();
+      if (idToken != null) {
+        final res = await repository.login(LoginRequest(idToken: idToken, method: AuthMethod.EMAIL_AND_PASSWORD));
+        if(res == null) {
+          debugPrint("Error logging in");
+          onFailed("Gagal login");
+          return;
+        }
+
+        await tokenManager.saveData(res);
+        if(tokenManager.user?.isEmailVerified == true) {
+          onNavigateToHome();
+        } else {
+          onNavigateToVerification();
+        }
+      }
+    } catch (e) {
+      debugPrint("Error: ${e.toString()}");
+    }
   }
 }

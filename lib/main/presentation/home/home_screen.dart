@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Settings Screen"),
+                    const Text("Favs Screen"),
                   ],
                 ),
               ),
@@ -52,7 +52,15 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Profile Screen"),
+                    const Text("My Secret Screen"),
+                  ],
+                ),
+              ),
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Me Screen"),
                     FilledButton(
                         onPressed: () { viewModel.signOut(onNavigateToSignIn); },
                         child: const Text("Sign Out")

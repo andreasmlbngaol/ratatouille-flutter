@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:moprog/auth/data/auth/auth_method.dart';
 import 'package:moprog/auth/data/auth/login_request/login_request.dart';
+import 'package:moprog/auth/data/auth/login_response/login_response.dart';
 import 'package:moprog/auth/model/auth_service.dart';
 import 'package:moprog/auth/model/ratatouille_repository.dart';
 import 'package:moprog/core/model/token_manager.dart';
@@ -25,13 +26,13 @@ abstract class AuthViewModel extends ViewModel {
     final credential = await authService.signInWithGoogle();
     final idToken = await credential?.user?.getIdToken();
     if (idToken != null) {
-      final res = await repository.login(LoginRequest(idToken: idToken, method: AuthMethod.GOOGLE));
+      final LoginResponse? res = await repository.login(LoginRequest(idToken: idToken, method: AuthMethod.GOOGLE));
       if(res == null) {
         onFailed("Gagal. Silakan coba lagi.");
         authService.signOut();
         return;
       }
-      await tokenManager.saveTokens(res.tokens.accessToken, res.tokens.refreshToken);
+      await tokenManager.saveData(res);
       onSuccess();
     }
   }

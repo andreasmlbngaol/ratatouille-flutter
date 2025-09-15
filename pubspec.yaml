@@ -12,26 +12,27 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   provider: ^6.1.5+1
-  get_it: ^8.2.0
-  dio: ^5.9.0
-  hive: ^2.2.3
+  get_it: ^8.2.0 # Dependency Injection
+  dio: ^5.9.0 # HTTP Client
+  hive: ^2.2.3 # Local Storage untuk shared preference
   hive_flutter: ^1.1.0
   firebase_core: ^4.0.0
   firebase_auth: ^6.0.1
   google_sign_in: ^6.3.0 # Jangan di upgrade Okeh
-  freezed_annotation: ^3.1.0
-  go_router: ^16.2.0
-  fluttertoast: ^8.2.12
-  json_annotation: ^4.9.0
-
+  freezed_annotation: ^3.1.0 # Data class-like
+  go_router: ^16.2.0 # Main Router
+  fluttertoast: ^8.2.12 # Toast
+  json_annotation: ^4.9.0 # Untuk anotasi JsonKey
+#  connectivity_plus: ^7.0.0 # Cek koneksi internet 1 (bisa false positive)
+  internet_connection_checker: ^3.0.1  # Cek koneksi internet
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
-  build_runner: ^2.7.0
+  build_runner: ^2.7.0 # Untuk generate freezed
   freezed: ^3.2.0
-  json_serializable: ^6.11.1
+  json_serializable: ^6.11.1 # Serialized data class freezed ke JSON
 
 
 flutter:

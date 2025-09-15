@@ -6,11 +6,13 @@ import 'package:moprog/core/presentation/widget.dart';
 
 class SignInScreen extends StatelessWidget {
   final VoidCallback onNavigateToHome;
+  final VoidCallback onNavigateToVerification;
   final VoidCallback onNavigateToSignUp;
 
   const SignInScreen({
     super.key,
     required this.onNavigateToHome,
+    required this.onNavigateToVerification,
     required this.onNavigateToSignUp,
   });
 
@@ -20,11 +22,16 @@ class SignInScreen extends StatelessWidget {
         viewModel: () => getIt<SignInViewModel>(),
         content: (context, viewModel) {
           final state = viewModel.state;
-          final signInEnabled = state.email.isNotEmpty && state.password.isNotEmpty && state.emailError == null && state.passwordError == null;
+          final signInEnabled = state.email.isNotEmpty &&
+              state.password.isNotEmpty && state.emailError == null &&
+              state.passwordError == null;
 
           return Theme(
             data: Theme.of(context).copyWith(
-              textTheme: Theme.of(context).textTheme.apply(
+              textTheme: Theme
+                  .of(context)
+                  .textTheme
+                  .apply(
                 bodyColor: Colors.white,
                 displayColor: Colors.white,
               ),
@@ -44,10 +51,12 @@ class SignInScreen extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: AssetImage("assets/images/auth_background.jpg"),
+                          image: AssetImage(
+                              "assets/images/auth_background.jpg"),
                           fit: BoxFit.cover,
                           colorFilter: ColorFilter.mode(
-                            Colors.black.withValues(alpha: 0.5), // angka 0.4 bisa diganti sesuai gelapnya
+                            Colors.black.withValues(alpha: 0.5),
+                            // angka 0.4 bisa diganti sesuai gelapnya
                             BlendMode.darken,
                           ),
                         )
@@ -121,11 +130,13 @@ class SignInScreen extends StatelessWidget {
                             spacing: 8,
                             children: [
                               Expanded(
-                                child: Divider(thickness: 2, color: Colors.white),
+                                child: Divider(
+                                    thickness: 2, color: Colors.white),
                               ),
                               const Text("Masuk Akun"),
                               Expanded(
-                                child: Divider(thickness: 2, color: Colors.white),
+                                child: Divider(
+                                    thickness: 2, color: Colors.white),
                               ),
                             ],
                           ),
@@ -150,8 +161,11 @@ class SignInScreen extends StatelessWidget {
                                 labelText: "Kata Sandi",
                                 prefixIcon: Icon(Icons.password),
                                 suffixIcon: IconButton(
-                                    onPressed: viewModel.togglePasswordVisibility,
-                                    icon: Icon(state.passwordVisible ? Icons.visibility : Icons.visibility_off)
+                                    onPressed: viewModel
+                                        .togglePasswordVisibility,
+                                    icon: Icon(state.passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off)
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(16),
@@ -166,15 +180,27 @@ class SignInScreen extends StatelessWidget {
                               width: double.infinity,
                               child: ElevatedButton(
                                   onPressed: signInEnabled
-                                      ? viewModel.signInWithEmailAndPassword
-                                      : null,
+                                      ? () {
+                                    viewModel.signInWithEmailAndPassword(
+                                        onNavigateToHome: onNavigateToHome,
+                                        onNavigateToVerification: onNavigateToVerification,
+                                        onFailed: (error) {
+                                          Fluttertoast.showToast(
+                                            msg: error,
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                          );
+                                        }
+                                    );
+                                  } : null,
                                   style: FilledButton.styleFrom(
                                       backgroundColor: Colors.yellow,
                                       foregroundColor: Colors.black,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(16),
                                       ),
-                                      padding: const EdgeInsets.symmetric(vertical: 4),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4),
                                       minimumSize: Size(0, 44)
                                   ),
                                   child: const Text("Masuk")
@@ -183,23 +209,25 @@ class SignInScreen extends StatelessWidget {
                           SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
-                                  onPressed: () => viewModel.signInWithGoogle(
-                                    onSuccess: onNavigateToHome,
-                                    onFailed: (error) {
-                                      Fluttertoast.showToast(
-                                        msg: error,
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.BOTTOM,
-                                      );
-                                    }
-                                  ),
+                                  onPressed: () =>
+                                      viewModel.signInWithGoogle(
+                                          onSuccess: onNavigateToHome,
+                                          onFailed: (error) {
+                                            Fluttertoast.showToast(
+                                              msg: error,
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                            );
+                                          }
+                                      ),
                                   style: FilledButton.styleFrom(
                                       backgroundColor: Colors.white,
                                       foregroundColor: Colors.black,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(16),
                                       ),
-                                      padding: const EdgeInsets.symmetric(vertical: 4),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4),
                                       minimumSize: Size(0, 44)
                                   ),
                                   icon: Image.asset(

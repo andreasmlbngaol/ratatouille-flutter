@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:moprog/auth/model/auth_service.dart';
 import 'package:moprog/core/model/api_client.dart';
 import 'package:moprog/core/utils/view_model.dart';
+import 'package:moprog/main/presentation/home/home_state/home_state.dart';
 
-import 'home_state.dart';
 
 class HomeViewModel extends ViewModel {
   final AuthService authService;
