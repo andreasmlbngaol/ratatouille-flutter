@@ -38,14 +38,6 @@ class SignInViewModel extends AuthViewModel {
 
   void _validatePassword(String password) {
     if (password.isEmpty) {
-      _state = _state.copyWith(passwordError: "Password tidak boleh kosong");
-    } else if (password.length < 8) {
-      _state = _state.copyWith(passwordError: "Password minimal 8 karakter");
-    } else if (!RegExp(r'[A-Z]').hasMatch(password)) {
-      _state = _state.copyWith(passwordError: "Password harus mengandung huruf besar");
-    } else if (!RegExp(r'[a-z]').hasMatch(password)) {
-      _state = _state.copyWith(passwordError: "Password harus mengandung huruf kecil");
-    } else if (!RegExp(r'\d').hasMatch(password)) {
       _state = _state.copyWith(passwordError: "Password harus mengandung angka");
     } else {
       _state = _state.copyWith(passwordError: null);

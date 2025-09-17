@@ -29,6 +29,7 @@ class ApiClient {
         onRequest: (options, handler) async {
           debugPrint("ApiClient: Calling: ${baseUrl + options.path}");
           final accessToken = tokenManager.accessToken; // langsung ambil dari singleton
+          debugPrint(accessToken);
           if(accessToken != null) {
             options.headers["Authorization"] = "Bearer $accessToken";
           }
