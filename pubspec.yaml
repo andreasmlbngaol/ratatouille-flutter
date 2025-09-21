@@ -25,6 +25,7 @@ dependencies:
   json_annotation: ^4.9.0 # Untuk anotasi JsonKey
 #  connectivity_plus: ^7.0.0 # Cek koneksi internet 1 (bisa false positive)
   internet_connection_checker: ^3.0.1  # Cek koneksi internet
+  flutter_riverpod: ^2.5.1
 
 dev_dependencies:
   flutter_test:
