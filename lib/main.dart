@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:moprog/core/presentation/theme.dart';
-import 'package:moprog/core/di/dependency_injection.dart';
+import 'package:moprog/core/data/di/getIt.dart';
+import 'package:moprog/core/data/utils/theme.dart';
 import 'package:moprog/router.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 void main() async {
@@ -20,7 +21,7 @@ void main() async {
   await Hive.initFlutter();
   await setupDi();
 
-  runApp(const MyApp());
+  runApp(const ProviderScope(child : MyApp()));
 }
 
 class MyApp extends StatelessWidget {
