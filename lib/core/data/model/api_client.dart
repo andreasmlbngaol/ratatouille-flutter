@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -28,6 +29,17 @@ class ApiClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           debugPrint("ApiClient: Calling: ${baseUrl + options.path}");
+
+          if(options.path == "/auth/login") {
+            final bodyJson = jsonEncode(options.data);
+            const chunkSize = 200;
+            for (var i = 0; i < bodyJson.length; i += chunkSize) {
+              debugPrint(bodyJson.substring(i,
+                  i + chunkSize > bodyJson.length ? bodyJson.length : i +
+                      chunkSize));
+            }
+          }
+
           final accessToken = tokenManager.accessToken; // langsung ambil dari singleton
           debugPrint(accessToken);
           if(accessToken != null) {

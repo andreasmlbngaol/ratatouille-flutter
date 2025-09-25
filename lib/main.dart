@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:moprog/core/data/di/getIt.dart';
+import 'package:moprog/core/data/di/get_it.dart';
 import 'package:moprog/core/data/utils/theme.dart';
 import 'package:moprog/router.dart';
 

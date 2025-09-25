@@ -36,6 +36,7 @@ class AuthRepository {
     final credential = await _firebaseAuthService.signInWithGoogle();
     final idToken = await credential?.user?.getIdToken();
     if (idToken != null) {
+      debugPrint("idToken: $idToken");
       final LoginResponse? res = await _backendAuthService.login(LoginRequest(idToken: idToken, method: AuthMethod.GOOGLE));
       if(res == null) {
         signOut();
