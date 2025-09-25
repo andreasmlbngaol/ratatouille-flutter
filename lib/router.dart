@@ -3,7 +3,7 @@ import 'package:moprog/auth/presentation/pages/sign_in_screen.dart';
 import 'package:moprog/auth/presentation/pages/sign_up_screen.dart';
 import 'package:moprog/core/data/utils/navigator.dart';
 import 'package:moprog/auth/presentation/pages/splash_screen.dart';
-import 'package:moprog/main/home/presentation/pages/home_screen.dart';
+import 'package:moprog/main/container/presentation/pages/home_screen.dart';
 
 /// Navigasi dari mana ke mana langsung diatur dari sini, biar terpusat dan gampang debug nya
 final router = GoRouter(

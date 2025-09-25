@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:moprog/main/home/presentation/widgets/navbar_item/navbar_item.dart';
+import 'package:moprog/main/container/presentation/widgets/navbar_item/navbar_item.dart';
 import 'package:moprog/provider.dart';
 
 class HomeScreen extends ConsumerWidget {

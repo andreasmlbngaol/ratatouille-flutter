@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moprog/auth/data/repositories/auth_repository.dart';
 import 'package:moprog/core/data/model/api_client.dart';
-import 'package:moprog/main/home/presentation/state/home_state.dart';
+import 'package:moprog/main/container/presentation/state/home_state.dart';
 
 class HomeViewModel extends StateNotifier<HomeState> {
   final AuthRepository _authRepository;

@@ -5,8 +5,8 @@ import 'package:moprog/auth/presentation/view_model/sign_in_view_model.dart';
 import 'package:moprog/auth/presentation/view_model/sign_up_view_model.dart';
 import 'package:moprog/auth/presentation/view_model/splash_view_model.dart';
 import 'package:moprog/core/data/di/get_it.dart';
-import 'package:moprog/main/home/presentation/state/home_state.dart';
-import 'package:moprog/main/home/presentation/view_model/home_view_model.dart';
+import 'package:moprog/main/container/presentation/state/home_state.dart';
+import 'package:moprog/main/container/presentation/view_model/home_view_model.dart';
 
 /// Auth
 final signInProvider = StateNotifierProvider.autoDispose<SignInViewModel, SignInState>((ref) {
