@@ -6,7 +6,7 @@ import 'package:moprog/auth/data/models/refresh_token_response/refresh_token_res
 import 'package:moprog/core/data/model/token_manager.dart';
 
 class ApiClient {
-  static const baseUrl = "https://moprog.sanalab.live/api";
+  static const baseUrl = "https://ratatouille-dev.sanalab.live/api";
   final Dio dio;
   final Dio _refreshDio;
   final TokenManager tokenManager;

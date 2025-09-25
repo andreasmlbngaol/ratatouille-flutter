@@ -9,19 +9,19 @@ import 'package:moprog/main/home/presentation/state/home_state.dart';
 import 'package:moprog/main/home/presentation/view_model/home_view_model.dart';
 
 /// Auth
-final signInProvider = StateNotifierProvider<SignInViewModel, SignInState>((ref) {
+final signInProvider = StateNotifierProvider.autoDispose<SignInViewModel, SignInState>((ref) {
   return SignInViewModel(repository: getIt());
 });
 
-final signUpProvider = StateNotifierProvider<SignUpViewModel, SignUpState>((ref) {
+final signUpProvider = StateNotifierProvider.autoDispose<SignUpViewModel, SignUpState>((ref) {
   return SignUpViewModel(repository: getIt());
 });
 
-final splashProvider = StateNotifierProvider<SplashViewModel, dynamic>((ref) {
+final splashProvider = StateNotifierProvider.autoDispose<SplashViewModel, dynamic>((ref) {
   return SplashViewModel(repository: getIt());
 });
 
 /// Main
-final homeProvider = StateNotifierProvider<HomeViewModel, HomeState>((ref) {
+final homeProvider = StateNotifierProvider.autoDispose<HomeViewModel, HomeState>((ref) {
   return HomeViewModel(authRepository: getIt(), apiClient: getIt());
 });
